@@ -14,7 +14,6 @@ const Navbar: React.FC = () => {
           <HashLink smooth to="/#projects" className="hover:text-white transition-colors">Projects</HashLink>
           <HashLink smooth to="/#education" className="hover:text-white transition-colors">Education</HashLink>
           <HashLink smooth to="/#certifications" className="hover:text-white transition-colors">Certifications</HashLink>
-          <HashLink smooth to="/#chat" className="hover:text-white transition-colors">Chat</HashLink>
         </div>
         <button className="px-5 py-2 rounded-full bg-indigo-600 text-white text-sm font-semibold hover:bg-indigo-500 transition-all shadow-lg shadow-indigo-500/20">
           Contact

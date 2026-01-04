@@ -29,15 +29,7 @@ export interface Certification {
   category: string;
 }
 
-export interface GroundingChunk {
-  maps?: {
-    uri: string;
-    title: string;
-  };
-}
-
 export interface ChatMessage {
   role: 'user' | 'model';
   text: string;
-  groundingLinks?: { title: string; uri: string }[];
 }

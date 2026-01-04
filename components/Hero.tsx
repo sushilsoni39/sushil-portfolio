@@ -78,13 +78,6 @@ const Hero: React.FC = () => {
               <span className="relative z-10 uppercase tracking-widest text-xs">Explore Portfolio</span>
               <div className="absolute inset-0 bg-indigo-600 scale-x-0 group-hover:scale-x-100 transition-transform origin-left duration-500" />
             </HashLink>
-            <HashLink smooth to="/#chat" className="px-14 py-6 border border-white/10 font-black rounded-full hover:bg-white/5 hover:border-indigo-500/40 transition-all flex items-center gap-4 group uppercase tracking-widest text-xs text-neutral-300 backdrop-blur-sm">
-              AI Representative
-              <div className="flex gap-1">
-                <div className="w-1.5 h-1.5 bg-indigo-500 rounded-full animate-bounce" />
-                <div className="w-1.5 h-1.5 bg-indigo-500 rounded-full animate-bounce [animation-delay:0.2s]" />
-              </div>
-            </HashLink>
           </div>
 
           <div className="flex justify-center gap-10 border-t border-white/5 pt-12 w-full max-w-2xl px-6">

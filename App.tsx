@@ -6,7 +6,6 @@ import Navbar from './components/Navbar';
 import Hero from './components/Hero';
 import ExperienceSection from './components/ExperienceSection';
 import Projects from './components/Projects';
-import AIChat from './components/AIChat';
 import EducationSection from './components/EducationSection';
 import CertificationsSection from './components/CertificationsSection';
 import CustomCursor from './components/CustomCursor';
@@ -127,7 +126,6 @@ const App: React.FC = () => {
               <Projects />
               <EducationSection />
               <CertificationsSection />
-              <AIChat />
 
               <footer className="py-24 border-t border-white/10 bg-black/40 backdrop-blur-xl relative overflow-hidden">
                 <div className="absolute top-0 left-0 w-full h-[1px] bg-gradient-to-r from-transparent via-indigo-500/50 to-transparent" />

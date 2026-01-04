@@ -8,10 +8,10 @@ import { ChatMessage } from "../types";
  */
 export const chatWithMe = async (messages: ChatMessage[]) => {
   try {
-    // Fix: Re-instantiate the client right before the call for up-to-date environment variables.
+    // Re-instantiate the client right before the call for up-to-date environment variables.
     const ai = new GoogleGenAI({ apiKey: process.env.API_KEY });
     
-    // Fix: Ensure the first message in the content list is a 'user' role to prevent API error.
+    // Ensure the first message in the content list is a 'user' role to prevent API error.
     const contents = messages
       .filter((m, i) => !(i === 0 && m.role === 'model'))
       .map(m => ({
@@ -40,18 +40,16 @@ export const chatWithMe = async (messages: ChatMessage[]) => {
 };
 
 /**
- * Provides location-based information grounded by Google Maps.
- * This is used for the "Local Guide" feature, specifically targeting Sushil's location (Hyderabad).
- * Maps grounding is exclusive to Gemini 2.5 series models.
+ * Provides location-based info for Hyderabad using Google Maps grounding.
+ * Maps grounding is supported in Gemini 2.5 series models.
  */
 export const askLocalGuide = async (query: string, coords: { latitude: number; longitude: number } | null) => {
   try {
-    // Fix: Re-instantiate to ensure we are using the most current environment context.
-    const aiInstance = new GoogleGenAI({ apiKey: process.env.API_KEY });
-    const response = await aiInstance.models.generateContent({
+    const ai = new GoogleGenAI({ apiKey: process.env.API_KEY });
+    
+    const response = await ai.models.generateContent({
       model: "gemini-2.5-flash",
-      // We prepend the context of Hyderabad to ensure local relevance if coordinates are generic.
-      contents: `Regarding Hyderabad, India: ${query}`,
+      contents: query,
       config: {
         tools: [{ googleMaps: {} }],
         toolConfig: coords ? {
@@ -61,24 +59,25 @@ export const askLocalGuide = async (query: string, coords: { latitude: number; l
               longitude: coords.longitude
             }
           }
-        } : undefined
+        } : undefined,
+        systemInstruction: "You are a local guide for Hyderabad, India. Use Google Maps grounding to provide real-time recommendations for cafes, coworking spaces, and tech hubs. Always be helpful and professional.",
       },
     });
 
-    const text = response.text || "I couldn't find any specific information for that query in Hyderabad.";
+    const text = response.text || "I couldn't find specific recommendations for that.";
+    const chunks = response.candidates?.[0]?.groundingMetadata?.groundingChunks || [];
     
-    // Extract grounding chunks to provide clickable source links in the UI.
-    const groundingChunks = response.candidates?.[0]?.groundingMetadata?.groundingChunks || [];
-    const links = groundingChunks
+    // Extract place URLs from groundingChunks as per guidelines.
+    const links = chunks
       .filter((chunk: any) => chunk.maps)
       .map((chunk: any) => ({
-        title: chunk.maps.title,
-        uri: chunk.maps.uri,
+        title: chunk.maps.title || "View on Maps",
+        uri: chunk.maps.uri
       }));
 
     return { text, links };
   } catch (error) {
     console.error("Local Guide Error:", error);
-    return { text: "I'm having trouble accessing local data right now. Please check back later.", links: [] };
+    return { text: "I'm having trouble accessing local maps data right now.", links: [] };
   }
 };
